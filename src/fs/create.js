@@ -1,17 +1,12 @@
 import fs from "node:fs/promises";
 import { fileURLToPath } from "node:url";
+import checkIfFileExists from "./utils.js";
 
 const create = async () => {
     const pathToFile = fileURLToPath(
-        new URL("./files/fresh.txt", import.meta.url)
+        new URL("files/fresh.txt", import.meta.url)
     );
-    let isFileExist = false;
-    try {
-        await fs.access(pathToFile, fs.constants.F_OK);
-        isFileExist = true;
-    } catch (e) {
-        console.error("error occurred while calling fs.access:", e);
-    }
+    const isFileExist = await checkIfFileExists(pathToFile);
     if (isFileExist) {
         throw new Error("FS operation failed");
     }
